@@ -23,6 +23,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 /// <summary>
+/// Represents a Vector containing X,Y,Z,W components
+/// </summary>
+struct Vector4
+{
+    public Vector4(float x, float y, float z, float w)
+    {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
+    }
+    public Vector4(float[] arr)
+    {
+        this.x = arr[0];
+        this.y = arr[1];
+        this.z = arr[2];
+        this.w = arr[3];
+    }
+    public float x, y, z, w;
+}
+/// <summary>
 /// Represents a Vector containing X,Y,Z components
 /// </summary>
 class Vector3
@@ -240,25 +261,34 @@ class Vector3
         return this + ((v - this) * s);
     }
     /// <summary>
-    /// Transforms this vector by the specified transformation matrix
+    /// Transforms this vector by the specified transformation matrix in homogeneous space
     /// </summary>
     /// <param name="m">the transformation matrix</param>
-    /// <returns>the vector transformed by a specified transformation matrix</returns>
-    public Vector3 Transform(Matrix4x4 m)
+    /// <returns>the vector transformed by a specified transformation matrix in homogeneous space</returns>
+    public Vector4 Transform(Matrix4x4 m)
     {
         float[] hv = new float[4] { this.x, this.y, this.z, 1 };
         float[] hvo = new float[4];
-        for (int r = 0; r < 4; r++)
+        for (int c = 0; c < 4; c++)
         {
             float v = 0;
             for (int i = 0; i < 4; i++)
             {
-                v += m[r, i] * hv[i];
+                v += hv[i] * m[i,c];
             }
-            hvo[r] = v;
+            hvo[c] = v;
         }
-        float[] hvn = new float[3] {hvo[0]/hvo[3], hvo[1]/hvo[3], hvo[2]/hvo[3]};
-        return new Vector3(hvn);
+        return new Vector4(hvo);
+    }
+    /// <summary>
+    /// Transforms this vector by the specified transformation matrix
+    /// </summary>
+    /// <param name="m">the transformation matrix</param>
+    /// <returns>the vector transformed by a specified transformation matrix</returns>
+    public Vector3 TransformCoord(Matrix4x4 m)
+    {
+        Vector4 v = this.Transform(m);
+        return new Vector3(v.x / v.w, v.y / v.w, v.z / v.w);
     }
 
     //static type-specific methods
@@ -312,13 +342,24 @@ class Vector3
         return v.Normalize();
     }
     /// <summary>
+    /// Transforms a specified vector by a specified transformation matrix in homogeneous space
+    /// </summary>
+    /// <param name="v">the vector to be transformed</param>
+    /// <param name="m">the transformation matrix</param>
+    /// <returns>a specified vector transformed by a specified transformation matrix in homogeneous space</returns>
+    public static Vector4 Transform(Vector3 v, Matrix4x4 m)
+    {
+        return v.Transform(m);
+    }
+    /// <summary>
     /// Transforms a specified vector by a specified transformation matrix
     /// </summary>
     /// <param name="v">the vector to be transformed</param>
     /// <param name="m">the transformation matrix</param>
     /// <returns>a specified vector transformed by a specified transformation matrix</returns>
-    public static Vector3 Transform(Vector3 v, Matrix4x4 m)
+    public static Vector3 TransformCoord(Vector3 v, Matrix4x4 m)
     {
-        return v.Transform(m);
+        return v.TransformCoord(m);
     }
 }
+

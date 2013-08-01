@@ -716,9 +716,9 @@ class Matrix4x4
     public static Matrix4x4 Translation(float x, float y, float z)
     {
         Matrix4x4 o = Matrix4x4.Identity();
-        o[0, 3] = x;
-        o[1, 3] = y;
-        o[2, 3] = z;
+        o[3, 0] = x;
+        o[3, 1] = y;
+        o[3, 2] = z;
         return o;
     }
 
