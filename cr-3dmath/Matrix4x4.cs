@@ -181,7 +181,7 @@ class Matrix4x4
         {
             for (int c = 0; c < 4; c++)
             {
-                o[r, c] /= b;
+                o[r, c] = a[r,c]/b;
             }
         }
         return o;
