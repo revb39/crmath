@@ -23,10 +23,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 /// <summary>
-/// Represents a Vector containing X,Y,Z,W components
+/// A vector containing X,Y,Z,W components
 /// </summary>
 struct Vector4
 {
+    /// <summary>
+    /// Creates a new Vector4 from the specified values
+    /// </summary>
+    /// <param name="x">the x-value of the vector</param>
+    /// <param name="y">the y-value of the vector</param>
+    /// <param name="z">the z-value of the vector</param>
+    /// <param name="w">the w-value of the vector</param>
     public Vector4(float x, float y, float z, float w)
     {
         this.x = x;
@@ -34,6 +41,10 @@ struct Vector4
         this.z = z;
         this.w = w;
     }
+    /// <summary>
+    /// Constructs a new Vector4, copying the data from a specified float array
+    /// </summary>
+    /// <param name="arr">the float array to copy data from</param>
     public Vector4(float[] arr)
     {
         this.x = arr[0];
@@ -44,7 +55,7 @@ struct Vector4
     public float x, y, z, w;
 }
 /// <summary>
-/// Represents a Vector containing X,Y,Z components
+/// Represents a vector containing X,Y,Z components
 /// </summary>
 class Vector3
 {
@@ -52,7 +63,7 @@ class Vector3
 
     //constructors
     /// <summary>
-    /// Constructs a new vector filed with zeros
+    /// Constructs a new Vector3 filed with zeros
     /// </summary>
     public Vector3()
     {
@@ -61,7 +72,7 @@ class Vector3
         this.z = 0;
     }
     /// <summary>
-    /// Constructs a new vector, copying the data from a specified float array
+    /// Constructs a new Vector3, copying the data from a specified float array
     /// </summary>
     /// <param name="arr">the float array to copy data from</param>
     public Vector3(float[] arr)
@@ -71,7 +82,7 @@ class Vector3
         this.z = arr[2];
     }
     /// <summary>
-    /// Constructs a new vector, copying the data from another vector
+    /// Constructs a new Vector3, copying the data from another Vector3
     /// </summary>
     /// <param name="vec">the vector to copy data from</param>
     public Vector3(Vector3 vec)
@@ -81,7 +92,7 @@ class Vector3
         this.z = vec.z;
     }
     /// <summary>
-    /// Constructs a new vector using the specified coordinates
+    /// Constructs a new Vector3 using the specified coordinates
     /// </summary>
     /// <param name="x">the x-coordinate of the vector</param>
     /// <param name="y">the y-coordinate of the vector</param>
@@ -109,6 +120,10 @@ class Vector3
         o.y = a.y - b.y;
         o.z = a.z - b.z;
         return o;
+    }
+    public static Vector3 operator -(Vector3 v)
+    {
+        return new Vector3(-v.x, -v.y, -v.z);
     }
 
     //unary operators using constants
@@ -157,9 +172,9 @@ class Vector3
 
     //standard .NET type methods
     /// <summary>
-    /// Copies the vector to another Vector3
+    /// Copies the Vector3 to another Vector3
     /// </summary>
-    /// <param name="obj">Vector3 to copy to</param>
+    /// <param name="obj">vector to copy to</param>
     public void Copy(Vector3 obj)
     {
         obj.x = this.x;
@@ -167,10 +182,10 @@ class Vector3
         obj.z = this.z;
     }
     /// <summary>
-    /// Determines if this vector is equivalent to another vector
+    /// Determines if this Vector3 is equivalent to another object
     /// </summary>
-    /// <param name="obj">the vector to compare to</param>
-    /// <returns>true: the vectors are equivalent, false: the vectors are not equivalent</returns>
+    /// <param name="obj">the object to compare to</param>
+    /// <returns>true: the objects are of the type Vector3 and are equivalent, false: the objects are not of the type Vector3 or not equivalent</returns>
     public override bool Equals(object obj)
     {
         if (obj.GetType() != typeof(Vector3))
@@ -187,7 +202,7 @@ class Vector3
         return this.x.GetHashCode() + this.y.GetHashCode() + this.z.GetHashCode();
     }
     /// <summary>
-    /// Converts this matrix to a float array
+    /// Converts this Vector3 to a float array
     /// </summary>
     /// <returns>a float array containing the vector data</returns>
     public float[] ToArray()
@@ -195,9 +210,9 @@ class Vector3
         return new float[3] { this.x, this.y, this.z };
     }
     /// <summary>
-    /// Converts the vector into its string representation
+    /// Converts the Vector3 into its string representation
     /// </summary>
-    /// <param name="format">A numeric string format</param>
+    /// <param name="format">a numeric string format</param>
     /// <returns>the string representation of this vector</returns>
     public string ToString(string format = "0.########")
     {
@@ -206,7 +221,7 @@ class Vector3
 
     //type-specific methods
     /// <summary>
-    /// Determines the cross-product of this vector and a specified vector
+    /// Determines the cross-product of this Vector3 and a specified Vector3
     /// </summary>
     /// <param name="v">the second vector to be used in the cross-product calculation</param>
     /// <returns>the cross-product of this vector and a specified vector</returns>
@@ -220,16 +235,16 @@ class Vector3
 
     }
     /// <summary>
-    /// Determines the dot-product of this vector and a specified vector
+    /// Determines the dot-product of this Vector3 and a specified Vector3
     /// </summary>
     /// <param name="v">the second vector to be used in the dot-product calculation</param>
-    /// <returns></returns>
+    /// <returns>the dot-product of this vector and a specified vector</returns>
     public float Dot(Vector3 v)
     {
         return ((this.x * v.x) + (this.y * v.y) + (this.z * v.z));
     }
     /// <summary>
-    /// Determines the length of this vector
+    /// Determines the length of this Vector3
     /// </summary>
     /// <returns>the length of this vector</returns>
     public float Length()
@@ -237,7 +252,7 @@ class Vector3
         return (float)Math.Sqrt((this.x * this.x) + (this.y * this.y) + (this.z * this.z));
     }
     /// <summary>
-    /// Calculates the normalized vector representation of this vector
+    /// Calculates the normalized Vector3 representation of this Vector3
     /// </summary>
     /// <returns>the normalized vector representation of this vector</returns>
     public Vector3 Normalize()
@@ -251,17 +266,17 @@ class Vector3
         return o;
     }
     /// <summary>
-    /// Performs a linear interpolation between this vector and a specified vector using a specified interpolation parameter
+    /// Performs a linear interpolation between this Vector3 and a specified Vector3 using a specified interpolation parameter
     /// </summary>
     /// <param name="v">the vector to be interpolated to</param>
     /// <param name="s">the interpolation parameter</param>
-    /// <returns>a new vector linearly interpolated between the two vectors using a specified interpolation parameter</returns>
+    /// <returns>a new vector linearly interpolated between the two vector using a specified interpolation parameter</returns>
     public Vector3 Lerp(Vector3 v, float s)
     {
         return this + ((v - this) * s);
     }
     /// <summary>
-    /// Transforms this vector by the specified transformation matrix in homogeneous space
+    /// Transforms this Vector3 by the specified transformation matrix in homogeneous space
     /// </summary>
     /// <param name="m">the transformation matrix</param>
     /// <returns>the vector transformed by a specified transformation matrix in homogeneous space</returns>
@@ -281,7 +296,7 @@ class Vector3
         return new Vector4(hvo);
     }
     /// <summary>
-    /// Transforms this vector by the specified transformation matrix
+    /// Transforms this Vector3 by the specified transformation matrix
     /// </summary>
     /// <param name="m">the transformation matrix</param>
     /// <returns>the vector transformed by a specified transformation matrix</returns>
@@ -293,27 +308,27 @@ class Vector3
 
     //static type-specific methods
     /// <summary>
-    /// Determines the cross-product of two 3D vectors
+    /// Determines the cross-product of two Vector3
     /// </summary>
     /// <param name="a">the first vector to be used in the cross-product calculation</param>
     /// <param name="b">the second vector to be used in the cross-product calculation</param>
-    /// <returns>the cross-product of two 3D vectors</returns>
+    /// <returns>the cross-product of two vector</returns>
     public static Vector3 Cross(Vector3 a, Vector3 b)
     {
         return a.Cross(b);
     }
     /// <summary>
-    /// Determines the dot-product of two 3D vectors
+    /// Determines the dot-product of two Vector3
     /// </summary>
     /// <param name="a">the first vector to be used in the dot-product calculation</param>
     /// <param name="b">the second vector to be used in the dot-product calculation</param>
-    /// <returns>the dot-product of two 3D vectors</returns>
+    /// <returns>the dot-product of two vector</returns>
     public static float Dot(Vector3 a, Vector3 b)
     {
         return a.Dot(b);
     }
     /// <summary>
-    /// Determines the length of a specified vector
+    /// Determines the length of a specified Vector3
     /// </summary>
     /// <param name="v">the vector to be calculated</param>
     /// <returns>the length of a specified vector</returns>
@@ -322,7 +337,7 @@ class Vector3
         return (float)Math.Sqrt((v.x * v.x) + (v.y * v.y) + (v.z * v.z));
     }
     /// <summary>
-    /// Performs a linear interpolation between two vectors using a specified interpolation parameter
+    /// Performs a linear interpolation between two Vector3 using a specified interpolation parameter
     /// </summary>
     /// <param name="a">the vector to be interpolated from</param>
     /// <param name="b">the vector to be interpolated to</param>
@@ -333,7 +348,7 @@ class Vector3
         return a + ((b - a)*s);
     }
     /// <summary>
-    /// Calculates the normalized vector representation of a specified vector
+    /// Calculates the normalized Vector3 representation of a specified Vector3
     /// </summary>
     /// <param name="v">the vector to be normalized</param>
     /// <returns>the normalized vector representation of a specified vector</returns>
@@ -342,7 +357,7 @@ class Vector3
         return v.Normalize();
     }
     /// <summary>
-    /// Transforms a specified vector by a specified transformation matrix in homogeneous space
+    /// Transforms a specified Vector3 by a specified transformation matrix in homogeneous space
     /// </summary>
     /// <param name="v">the vector to be transformed</param>
     /// <param name="m">the transformation matrix</param>
@@ -352,7 +367,7 @@ class Vector3
         return v.Transform(m);
     }
     /// <summary>
-    /// Transforms a specified vector by a specified transformation matrix
+    /// Transforms a specified Vector3 by a specified transformation matrix
     /// </summary>
     /// <param name="v">the vector to be transformed</param>
     /// <param name="m">the transformation matrix</param>

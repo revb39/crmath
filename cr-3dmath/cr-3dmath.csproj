@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{43D7C39F-E5E6-4306-9E48-B759BFF23204}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>cr_3dmath</RootNamespace>
     <AssemblyName>cr-3dmath</AssemblyName>
@@ -33,9 +33,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Matrix4x4.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="test.cs" />
     <Compile Include="Quaternion.cs" />
     <Compile Include="Vector3.cs" />
   </ItemGroup>

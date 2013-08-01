@@ -25,7 +25,7 @@ using System.Linq;
 using System.Text;
 
 /// <summary>
-/// Represents a Matrix of order 4x4
+/// A Matrix of order 4x4
 /// </summary>
 class Matrix4x4
 {
@@ -431,7 +431,8 @@ class Matrix4x4
         Matrix4x4 o = new Matrix4x4(x.x, y.x, z.x, 0,
                                     x.y, y.y, z.y, 0,
                                     x.z, y.z, z.z, 0,
-                                    Vector3.Dot(x, eye), Vector3.Dot(y, eye), Vector3.Dot(z, eye), 1);
+                                    -Vector3.Dot(x, eye), -Vector3.Dot(y, eye), -Vector3.Dot(z, eye), 1);
+
         return o;
     }
     /// <summary>
@@ -616,17 +617,17 @@ class Matrix4x4
     /// <returns>a new matrix that rotates around an arbitrary axis</returns>
     public static Matrix4x4 RotationAxis(Vector3 v, float angle)
     {
+        Vector3 a = v.Normalize();
         Matrix4x4 o = Matrix4x4.Identity();
         float c = (float)Math.Cos(angle);
         float s = (float)Math.Sin(angle);
         float t = (1 - (float)Math.Cos(angle));
-        float x = v.x;
-        float y = v.y;
-        float z = v.z;
+        float x = a.x;
+        float y = a.y;
+        float z = a.z;
         o[0, 0] = t * (x * x) + c; o[0, 1] = (t * x * y) + (s * z); o[0, 2] = (t * x * z) - (s * y);
         o[1, 0] = (t * x * y) - (s * z); o[1, 1] = t * (y * y) + c; o[1, 2] = (t * y * z) + (s * x);
         o[2, 0] = (t * x * z) + (s * y); o[2, 1] = (t * y * z) - (s * x); o[2, 2] = t * (z * z) + c;
-
         return o;
     }
     /// <summary>
@@ -636,15 +637,26 @@ class Matrix4x4
     /// <returns>a new rotation matrix from a quaternion</returns>
     public static Matrix4x4 RotationQuaternion(Quaternion q)
     {
-        Quaternion qn = Quaternion.Normalize(q);
-        float qw = qn.w;
-        float qx = qn.x;
-        float qy = qn.y;
-        float qz = qn.z;
-        Matrix4x4 o = new Matrix4x4(1.0f - 2.0f * qy * qy - 2.0f * qz * qz, 2.0f * qx * qy - 2.0f * qz * qw, 2.0f * qx * qz + 2.0f * qy * qw, 0.0f,
-                                    2.0f * qx * qy + 2.0f * qz * qw, 1.0f - 2.0f * qx * qx - 2.0f * qz * qz, 2.0f * qy * qz - 2.0f * qx * qw, 0.0f,
-                                    2.0f * qx * qz - 2.0f * qy * qw, 2.0f * qy * qz + 2.0f * qx * qw, 1.0f - 2.0f * qx * qx - 2.0f * qy * qy, 0.0f,
-                                    0.0f, 0.0f, 0.0f, 1.0f);
+        float xx = q.x * q.x;
+        float yy = q.y * q.y;
+        float zz = q.z * q.z;
+        float xy = q.x * q.y;
+        float zw = q.z * q.w;
+        float zx = q.z * q.x;
+        float yw = q.y * q.w;
+        float yz = q.y * q.z;
+        float xw = q.x * q.w;
+
+        Matrix4x4 o = Matrix4x4.Identity();
+        o[0,0] = 1.0f - (2.0f * (yy + zz));
+        o[0,1] = 2.0f * (xy + zw);
+        o[0,2] = 2.0f * (zx - yw);
+        o[1,0] = 2.0f * (xy - zw);
+        o[1,1] = 1.0f - (2.0f * (zz + xx));
+        o[1,2] = 2.0f * (yz + xw);
+        o[2,0] = 2.0f * (zx + yw);
+        o[2,1]= 2.0f * (yz - xw);
+        o[2,2] = 1.0f - (2.0f * (yy + xx)); 
         return o;
     }
     /// <summary>
